@@ -1,0 +1,98 @@
+﻿<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script>
+    var directionsDisplay;
+    var directionsService = new google.maps.DirectionsService();
+    var map;
+    var markers = [];
+
+    function initialize() {
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        var mapOptions = {
+            zoom: 15,
+            center: new google.maps.LatLng(21.0140, 105.810),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        directionsDisplay.setMap(map);
+    }
+
+    function calcRoute() {
+        var start = document.getElementById('txtStart').value; //new google.maps.LatLng(21.0140, 105.810);// Điểm bắt đầu
+        var end = document.getElementById('txtEnd').value; //new google.maps.LatLng(21.0200, 105.819);// Điểm kết thúc
+        var waypts = [];//Các điểm phải đi qua từ điểm start đến điểm end (có thể có hoặc không)
+
+//        waypts.push({
+//            location: new google.maps.LatLng(21.0140, 105.810),
+//            stopover: true
+//        });
+
+//        waypts.push({
+//            location: new google.maps.LatLng(21.0160, 105.813),
+//            //stopover: true
+//        });
+
+//        waypts.push({
+//            location: new google.maps.LatLng(21.0180, 105.800),
+//            //stopover: true
+//        });
+
+//        waypts.push({
+//            location: new google.maps.LatLng(21.0200, 105.819),
+//            stopover: true
+//        });
+        
+
+        var request = {
+            origin: start,
+            destination: end,
+            waypoints: waypts,
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.DRIVING //WALKING, BICYCLING, TRANSIT
+        };
+
+        //Tìm và vẽ đường đi
+        directionsService.route(request, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {                
+                directionsDisplay.setDirections(response);
+
+                //Hiển thị text mô tả đường đi trên thẻ div "directions_panel"
+                var route = response.routes[0];
+                var summaryPanel = document.getElementById('directions_panel');
+                summaryPanel.innerHTML = '';
+                // For each route, display summary information.
+                for (var i = 0; i < route.legs.length; i++) {
+                    var routeSegment = i + 1;
+                    summaryPanel.innerHTML += '<b>Tuyến : ' + routeSegment + '</b><br>';
+                    summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+                    summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+                    summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+                }
+            }
+        });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+<div id="map-canvas" style="float: left; width: 70%; height: 100%;">
+</div>
+<div id="control_panel" style="float: right; width: 20%; text-align: left; padding-top: 20px">
+    <div style="margin: 20px; border-width: 2px;">
+        <b>Start:</b><input type="text" id="txtStart" value="21.0140, 105.810" />
+        <br>
+        <b>End:</b><input type="text" id="txtEnd" value="21.0200, 105.819" />
+        <br>
+        <input type="submit" onclick="calcRoute();" value="Tìm đường">
+    </div>
+    <div id="directions_panel" style="margin: 20px; background-color: #FFEE77;">
+    </div>
+    <div>
+    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="../../Content/swflash.cab#version=9,0,0,0" width="213" height="170" id="playvideo" align="middle">
+                    <param name="allowScriptAccess" value="*" />
+                    <param name="allowFullScreen" value="true" />
+                    <param name = "movie" value = "../../Content/play.swf?video=../../Content/IntroductionBaoCong.flv&image=../../Content/Images/building_daidien.png" />
+                    <param name="quality" value="high" />                    
+                    <embed src = "../../Content/play.swf?video=../../Content/IntroductionBaoCong.flv&autoplay=true" quality = "high" preview="../../Content/Images/building_daidien.png"  width = "700" height = "500" name = "VideoPlayer" align = "middle" allowScriptAccess = "*" allowFullScreen = "true" type = "application/x-shockwave-flash" pluginspage = "http://www.macromedia.com/go/getflashplayer" />
+                </object> 
+    </div>
+</div>

@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MapModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="MapModelStoreContainer">
+          <EntitySet Name="DataDA" EntityType="MapModel.Store.DataDA" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DuAn" EntityType="MapModel.Store.DuAn" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="KhuVuc" EntityType="MapModel.Store.KhuVuc" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Marker" EntityType="MapModel.Store.Marker" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UtilityKind" EntityType="MapModel.Store.UtilityKind" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_DuAn_KhuVuc" Association="MapModel.Store.FK_DuAn_KhuVuc">
+            <End Role="KhuVuc" EntitySet="KhuVuc" />
+            <End Role="DuAn" EntitySet="DuAn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marker_UtilityKind" Association="MapModel.Store.FK_Marker_UtilityKind">
+            <End Role="UtilityKind" EntitySet="UtilityKind" />
+            <End Role="Marker" EntitySet="Marker" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DataDA">
+          <Key>
+            <PropertyRef Name="Center" />
+          </Key>
+          <Property Name="LatLng" Type="varchar(max)" />
+          <Property Name="Center" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DuAn">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MaKhuVuc" Type="int" />
+          <Property Name="TenDuAn" Type="nvarchar" MaxLength="50" />
+          <Property Name="ToaDo" Type="varchar" MaxLength="50" />
+          <Property Name="AnhDaiDien" Type="varchar" MaxLength="50" />
+          <Property Name="DienTich" Type="nvarchar" MaxLength="50" />
+          <Property Name="GiaThue" Type="nvarchar" MaxLength="50" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
+          <Property Name="VungBien" Type="nvarchar(max)" />
+          <Property Name="AnhIcon" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="KhuVuc">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Location" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Marker">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="ImgUrl" Type="nvarchar" MaxLength="100" />
+          <Property Name="LayerID" Type="int" />
+          <Property Name="Position" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="UtilityKind">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_DuAn_KhuVuc">
+          <End Role="KhuVuc" Type="MapModel.Store.KhuVuc" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DuAn" Type="MapModel.Store.DuAn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KhuVuc">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DuAn">
+              <PropertyRef Name="MaKhuVuc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Marker_UtilityKind">
+          <End Role="UtilityKind" Type="MapModel.Store.UtilityKind" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Marker" Type="MapModel.Store.Marker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UtilityKind">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Marker">
+              <PropertyRef Name="LayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MapModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="MapEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Marker" EntityType="MapModel.Marker" />
+          <EntitySet Name="UtilityKind" EntityType="MapModel.UtilityKind" />
+          <AssociationSet Name="FK_Marker_UtilityKind" Association="MapModel.FK_Marker_UtilityKind">
+            <End Role="UtilityKind" EntitySet="UtilityKind" />
+            <End Role="Marker" EntitySet="Marker" />
+          </AssociationSet>
+          <EntitySet Name="DataDA" EntityType="MapModel.DataDA" />
+          <EntitySet Name="KhuVuc" EntityType="MapModel.KhuVuc" />
+          <EntitySet Name="DuAn" EntityType="MapModel.DuAn" />
+          <AssociationSet Name="FK_DuAn_KhuVuc" Association="MapModel.FK_DuAn_KhuVuc">
+            <End Role="KhuVuc" EntitySet="KhuVuc" />
+            <End Role="DuAn" EntitySet="DuAn" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Marker">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Title" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImgUrl" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="LayerID" />
+          <Property Type="String" Name="Position" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UtilityKind" Relationship="MapModel.FK_Marker_UtilityKind" FromRole="Marker" ToRole="UtilityKind" />
+        </EntityType>
+        <EntityType Name="UtilityKind">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Title" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Marker" Relationship="MapModel.FK_Marker_UtilityKind" FromRole="UtilityKind" ToRole="Marker" />
+        </EntityType>
+        <Association Name="FK_Marker_UtilityKind">
+          <End Type="MapModel.UtilityKind" Role="UtilityKind" Multiplicity="0..1" />
+          <End Type="MapModel.Marker" Role="Marker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UtilityKind">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Marker">
+              <PropertyRef Name="LayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DataDA">
+          <Key>
+            <PropertyRef Name="Center" />
+          </Key>
+          <Property Type="String" Name="LatLng" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Center" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="KhuVuc">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Title" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Location" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DuAn" Relationship="MapModel.FK_DuAn_KhuVuc" FromRole="KhuVuc" ToRole="DuAn" />
+        </EntityType>
+        <EntityType Name="DuAn">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="MaKhuVuc" />
+          <Property Type="String" Name="TenDuAn" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ToaDo" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="AnhDaiDien" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DienTich" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GiaThue" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TrangThai" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="VungBien" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="AnhIcon" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="KhuVuc" Relationship="MapModel.FK_DuAn_KhuVuc" FromRole="DuAn" ToRole="KhuVuc" />
+        </EntityType>
+        <Association Name="FK_DuAn_KhuVuc">
+          <End Type="MapModel.KhuVuc" Role="KhuVuc" Multiplicity="0..1" />
+          <End Type="MapModel.DuAn" Role="DuAn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KhuVuc">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DuAn">
+              <PropertyRef Name="MaKhuVuc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MapModelStoreContainer" CdmEntityContainer="MapEntities">
+          <EntitySetMapping Name="Marker">
+            <EntityTypeMapping TypeName="MapModel.Marker">
+              <MappingFragment StoreEntitySet="Marker">
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="LayerID" ColumnName="LayerID" />
+                <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UtilityKind">
+            <EntityTypeMapping TypeName="MapModel.UtilityKind">
+              <MappingFragment StoreEntitySet="UtilityKind">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataDA">
+            <EntityTypeMapping TypeName="MapModel.DataDA">
+              <MappingFragment StoreEntitySet="DataDA">
+                <ScalarProperty Name="Center" ColumnName="Center" />
+                <ScalarProperty Name="LatLng" ColumnName="LatLng" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KhuVuc">
+            <EntityTypeMapping TypeName="MapModel.KhuVuc">
+              <MappingFragment StoreEntitySet="KhuVuc">
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DuAn">
+            <EntityTypeMapping TypeName="MapModel.DuAn">
+              <MappingFragment StoreEntitySet="DuAn">
+                <ScalarProperty Name="AnhIcon" ColumnName="AnhIcon" />
+                <ScalarProperty Name="VungBien" ColumnName="VungBien" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="GiaThue" ColumnName="GiaThue" />
+                <ScalarProperty Name="DienTich" ColumnName="DienTich" />
+                <ScalarProperty Name="AnhDaiDien" ColumnName="AnhDaiDien" />
+                <ScalarProperty Name="ToaDo" ColumnName="ToaDo" />
+                <ScalarProperty Name="TenDuAn" ColumnName="TenDuAn" />
+                <ScalarProperty Name="MaKhuVuc" ColumnName="MaKhuVuc" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="MapModel.Marker" Width="1.5" PointX="3" PointY="0.875" Height="1.9210009765624996" />
+        <EntityTypeShape EntityType="MapModel.UtilityKind" Width="1.5" PointX="0.75" PointY="1.125" Height="1.4279589843749994" />
+        <AssociationConnector Association="MapModel.FK_Marker_UtilityKind" >
+          <ConnectorPoint PointX="2.25" PointY="1.8389794921874998" />
+          <ConnectorPoint PointX="3" PointY="1.8389794921874998" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="MapModel.DataDA" Width="1.5" PointX="3.375" PointY="3.75" Height="1.2636116536458317" />
+        <EntityTypeShape EntityType="MapModel.KhuVuc" Width="1.5" PointX="0.75" PointY="7.25" Height="1.5923063151041674" />
+        <EntityTypeShape EntityType="MapModel.DuAn" Width="1.5" PointX="3" PointY="6.625" Height="2.7427376302083317" />
+        <AssociationConnector Association="MapModel.FK_DuAn_KhuVuc" >
+          <ConnectorPoint PointX="2.25" PointY="8.0461531575520837" />
+          <ConnectorPoint PointX="3" PointY="8.0461531575520837" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
